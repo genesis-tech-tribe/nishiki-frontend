@@ -2,7 +2,8 @@
 
 import { PlusIcon } from '@/assets/images/icons';
 import { Button, DrawerContent, DrawerRoot, DrawerTrigger, Icon } from '@/components/ui';
-import { AddDrawerContent } from '@/features/foods/components';
+import { DrawerBody, DrawerFooter, DrawerHeader, DrawerTitle } from '@/components/ui';
+import { AddDrawerBody } from '@/features/foods/components/AddDrawerBody';
 import { GroupIdContainersMapType } from '@/features/foods/types/FoodTypes';
 import {
   ContainerIdGroupIdMapType,
@@ -12,6 +13,8 @@ import {
 import { cn } from '@/lib/tailwind/utils';
 
 import { useState } from 'react';
+
+import { AddDrawerFooter } from './AddDrawerFooter';
 
 interface IAddButtonProps {
   groupIdContainerIdsMap: GroupIdContainersMapType;
@@ -29,7 +32,6 @@ export const AddButton = ({
   className,
 }: IAddButtonProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   return (
     <DrawerRoot open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
       <DrawerTrigger asChild>
@@ -45,13 +47,20 @@ export const AddButton = ({
         </Button>
       </DrawerTrigger>
       <DrawerContent side="bottom">
-        <AddDrawerContent
-          setIsDrawerOpen={setIsDrawerOpen}
-          groupIdContainerIdsMap={groupIdContainerIdsMap}
-          containerIdGroupIdMap={containerIdGroupIdMap}
-          containerIdNameMap={containerIdNameMap}
-          groupIdNameMap={groupIdNameMap}
-        />
+        <DrawerHeader>
+          <DrawerTitle>Add Food</DrawerTitle>
+        </DrawerHeader>
+        <DrawerBody>
+          <AddDrawerBody
+            groupIdContainerIdsMap={groupIdContainerIdsMap}
+            containerIdGroupIdMap={containerIdGroupIdMap}
+            containerIdNameMap={containerIdNameMap}
+            groupIdNameMap={groupIdNameMap}
+          />
+        </DrawerBody>
+        <DrawerFooter>
+          <AddDrawerFooter setIsDrawerOpen={setIsDrawerOpen} />
+        </DrawerFooter>
       </DrawerContent>
     </DrawerRoot>
   );
