@@ -1,0 +1,40 @@
+name: Deploy documents
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-document:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Build Documents
+        run: docker compose up
+
+      # develop branch
+      - name: Deploy to GitHub Pages, Develop Branch
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref_name == 'develop'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build-docs
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          destination_dir: dev
+
+      # main branch
+      - name: Deploy to GitHub Pages, Main Branch
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref_name == 'main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build-docs
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          destination_dir: prod

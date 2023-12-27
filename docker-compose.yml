@@ -6,3 +6,10 @@ services:
     ports:
       # Serve the mocked API locally as available on port 8080
       - '8080:4010'
+  front-web-doc:
+    image: node:18
+    volumes:
+      - './backend/query/web-api:/code'
+      - './build-docs/backend/query/web-api:/build'
+    command: 'npx @redocly/cli build-docs ./query-web-api.yaml -o /build/index.html'
+    working_dir: '/code'
